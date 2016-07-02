@@ -231,8 +231,8 @@ def return_sta(request):
         elif po['m'] == 'shell':
             GPIO.output(moto_1_f, 1)
             GPIO.output(moto_1_r, 1)
-            t = threading.Timer(shell_ud_t1_set/1000, tt2)
             if po['d']== 'up' and sta_shell!=1:
+                t = threading.Timer(shell_ud_t1_set/1000, tt2)
                 GPIO.output(moto_1_r, 0)
                 p.ChangeDutyCycle(40)                
                 t.start()
@@ -240,6 +240,7 @@ def return_sta(request):
                 sta_shell=1
                 tbody= '{"a":"shell","b":"up"}'
             elif po['d']== 'dw' and sta_shell!=1:
+                t = threading.Timer(shell_ud_t1_set/1000, tt2)
                 GPIO.output(moto_1_f, 0)
                 p.ChangeDutyCycle(40)
                 t.start()
