@@ -103,6 +103,7 @@ $(document).ready(function(){
 	  return false;
   });
   $("#addtime").click(function(){
+	  if(running_sta=='0'){return false;}
 	  $.post('sta',{p:$('#pwd').val(),m:'addtime',d:20},function(r){
 		  //alert('add');
 		  $('#timep').pietimer('pause');
