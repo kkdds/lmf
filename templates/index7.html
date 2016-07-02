@@ -41,20 +41,17 @@ $(document).ready(function(){
         close:'.closeBtn'
     });
 	
-  $("#setMtimebtn").click(function(){	 
-    var cctime=parseInt($('#setMtime').val()); 
-	if(isNaN(cctime)){
-		return false;
-	}
-	Gcaitime=cctime;
-	$('#timep').pietimer({
-		seconds:cctime,
-	},function(){
-		timesup();
-	})
-	$('div.overlay').hide();
-	$('div.modal').hide();
-	return false;
+  $("#setMtimebtn").click(function(){
+	  if(running_sta==true){return false;}
+	  var cctime=parseInt($('#setMtime').val()); 
+	  if(isNaN(cctime)){
+		  return false;
+	  }
+	  Gcaitime=cctime;
+	  $('#timep').pietimer({seconds:Gcaitime},function(){timesup();})
+	  $('div.overlay').hide();
+	  $('div.modal').hide();
+	  return false;
   });
 	
   $(".scr_div").click(function(){
@@ -407,7 +404,7 @@ function do_show_cai_class(){
     <div style="padding-bottom:10px">
     	<span id="namescreen" class="namescreen" style="width:30%">v7</span> ℃ &nbsp; &nbsp;
     	<input type="button" id="cntBtn" class="abtn disable_when_running " style="width:30%" value="连接">
-    	<input type="button" id="setBtn" class="abtn disable_when_running " style="width:30%" value="设置"  onClick="do_show_setting()">
+    	<input type="button" id="setBtn" class="abtn disable_when_running " style="width:30%" value="设置" onClick="do_show_setting()">
     </div>
     <div class="btn_div runscr modalLink2">
       <p id="timep"></p>            
