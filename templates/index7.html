@@ -140,8 +140,8 @@ function doon(ckbtn){
 	if(running_sta=='0'){
 		running_sta=='1';
 		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'fm',t:Gcaitime},function(r){
-			//var rj=JSON.parse(r);
-			//$('#btnoff').prop("disabled", false);
+			$('#btnon').attr("disabled","disabled");
+			$('#btnoff').removeAttr("disabled");
 		});
 	}
 	return false;
@@ -163,7 +163,8 @@ function dooff(ckbtn){
 	if(running_sta=='1'){
 		running_sta=='0';
 		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'fm'},function(r){
-			//var rj=JSON.parse(r);
+			$('#btnon').removeAttr("disabled");
+			$('#btnoff').attr("disabled","disabled");
 		});
 	}
 	return false;
