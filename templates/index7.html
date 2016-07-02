@@ -133,16 +133,20 @@ function timesup(){
 		//var rj=JSON.parse(r);
 	//});
 }
-function doonoff(ckbtn){
-	if(running_sta=='0'){
+function doon(ckbtn){
 	  $('#timep').pietimer('start');
 	  $('#btnon').attr("disabled","disabled");
 	  $('#btnoff').removeAttr("disabled");
-	  $.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'fm',t:Gcaitime},function(r){
-		  //var rj=JSON.parse(r);
-		  //$('#btnoff').prop("disabled", false);
-	  });
-	}else if(running_sta=='1'){
+	if(running_sta=='0'){
+		running_sta=='1';
+		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'fm',t:Gcaitime},function(r){
+			//var rj=JSON.parse(r);
+			//$('#btnoff').prop("disabled", false);
+		});
+	}
+	return false;
+}
+function dooff(ckbtn){
 	  $('#timep').pietimer('pause');
 	  //$('#btnoff').prop("disabled", true);
 	  
@@ -156,9 +160,11 @@ function doonoff(ckbtn){
 	
 	  $('#btnon').removeAttr("disabled");
 	  $('#btnoff').attr("disabled","disabled");
-	  $.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'fm'},function(r){
-		  //var rj=JSON.parse(r);
-	  });
+	if(running_sta=='1'){
+		running_sta=='0';
+		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'fm'},function(r){
+			//var rj=JSON.parse(r);
+		});
 	}
 	return false;
 }
@@ -445,8 +451,8 @@ function do_show_cai_class(){
         <input type="button" class="abtn " value="盖子 合" onClick="shell_dw()">
     </div>
     <div class="btn_div runscr">
-        <input type="button" id="btnon" class="abtn disable_when_running" value="开始" onClick="doonoff(this)">
-        <input type="button" id="btnoff" class="abtn" value="结束" onClick="doonoff(this)">
+        <input type="button" id="btnon" class="abtn disable_when_running" value="开始" onClick="doon(this)">
+        <input type="button" id="btnoff" class="abtn" value="结束" onClick="dooff(this)">
     </div>
     <div class="btn_div runscr">
         <input type="button" class="abtn disable_when_running" id="btn_bw" value="保温" onClick="slave_on_off(this)">
