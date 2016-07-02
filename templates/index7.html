@@ -180,12 +180,12 @@ function update_sta(){
 	}
 	if(running_sta=='0'){
 		//$('.disable_when_running').prop("disabled",false);
-		$('#btnon').prop("disabled", false);
-		$('#btnoff').prop("disabled", true);
+		$('#btnon').removeAttr("disabled");
+		$('#btnoff').attr("disabled","disabled");
 	}
 	if(running_sta=='1'){
 		//$('.disable_when_running').prop("disabled",true);
-		$('#btnoff').prop("disabled", false);
+		$('#btnoff').removeAttr("disabled");
 	}  
 }
 function playvideo(){
