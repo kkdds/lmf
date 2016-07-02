@@ -260,7 +260,7 @@ def return_sta(request):
                 sta_shell=2
                 p.ChangeDutyCycle(0)
                 tbody= '{"a":"shell","b":"stop"}'
-            print(tbody)
+            print(tbody+str(time.time()))
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
                 
         elif po['m'] == 'pump2':
@@ -389,7 +389,7 @@ def loop_info():
                     sta_shell=0
                 elif shell_up_down == 2:
                     sta_shell=2
-                print('shell run end '+str(sta_shell))
+                print('shell run end '+str(sta_shell)+str(time.time()))
 
         else: # shell_up_down==0
             shell_up_down=0
