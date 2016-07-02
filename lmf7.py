@@ -331,9 +331,9 @@ def loop_info():
     global watchdog,huixiqi,p
     global shell_up_down,shell_ud_t1,shell_ud_t2u,shell_ud_t2d,shell_ud_t3
     while True:
-        yield from asyncio.sleep(0.05)
+        yield from asyncio.sleep(0.02)
         watchdog+=1
-        if watchdog>100:
+        if watchdog>200:
             watchdog=0;
             sta_onoff=0
             print('watchdog')
