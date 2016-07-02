@@ -143,10 +143,10 @@ shell_ud_t1_set=0
 shell_ud_t2u_set=0
 shell_ud_t2d_set=0
 shell_ud_t3_set=0
-shell_ud_t1=1
-shell_ud_t2u=2
-shell_ud_t2d=2
-shell_ud_t3=1
+shell_ud_t1=-1
+shell_ud_t2u=-1
+shell_ud_t2d=-1
+shell_ud_t3=-1
 '''
 shell_sta
 0 top stop
@@ -182,13 +182,21 @@ def return_sta(request):
             watchdog=0
             tbody= '{"shell_sta":'+str(sta_shell)+',"running_sta":'+str(sta_onoff)+',"tmp1":'+str(tempeture_1)+'}'
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
+        
+        elif po['m'] == 'addtime':
+            watchdog=0
+            print('old stop at'+str(eIntval1))
+            eIntval1+=int(po['d'])
+            print('shall stop at '+str(eIntval1))
+            tbody= '{"addtime":'+po['d']+'}'
+            return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
                 
         elif po['m'] == 'gpioon':
             delaytime=po['t']
             if po['d']== 'fm':
                 eTimer1=True
                 eIntval1=int(time.time())+int(delaytime)
-                print('eTimer1 1 start')
+                print('eTimer1 start,'+str(time.time()))
                 sta_shell=1
                 sta_onoff=1
                 GPIO.output(io_zq, 0)
@@ -212,6 +220,7 @@ def return_sta(request):
                 sta_onoff=0
                 GPIO.output(io_zq, 1)
                 GPIO.output(io_jr, 1)
+                eTimer1=False
                 tbody= '{"a":"zq+jr","b":"off"}'
             elif po['d']== 'fs':
                 GPIO.output(io_bw, 1)
@@ -343,15 +352,15 @@ def loop_info():
         if eTimer1==True:
             #sta_shell=1
             if int(time.time())>=int(eIntval1):
-                print('eTimer1 1 end')
+                sta_onoff=0
+                sta_shell=2
                 GPIO.output(io_jr, 1)
                 GPIO.output(io_zq, 1)
+                print('eTimer1 end,jr=1,zq=1,'+str(time.time()))
                 eTimer1=False
-                sta_shell=2
-                sta_onoff=0
-                huixiqi=120
-                GPIO.output(io_hx, 0)
-                print('huixiqi on')
+                #huixiqi=120
+                #GPIO.output(io_hx, 0)
+                #print('huixiqi on')
                 
         #if shell_up_down != 0:
         if sta_shell==1:

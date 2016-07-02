@@ -102,6 +102,24 @@ $(document).ready(function(){
 	  $(this).toggleClass("myselcai");
 	  return false;
   });
+  $("#addtime").click(function(){
+	  $.post('sta',{p:$('#pwd').val(),m:'addtime',d:20},function(r){
+		  //alert('add');
+		  $('#timep').pietimer('pause');
+	  
+		  var cctime=$('#timep').text(); 
+		  cctime=cctime.substring(0,cctime.length-2); 
+		  cctime=parseInt(cctime); 
+		  if(isNaN(cctime)){
+			cctime=1;
+		  }
+		  Gcaitime=cctime+20;
+		  
+		  $('#timep').pietimer({seconds: Gcaitime},function(){timesup();})
+		  $('#timep').pietimer('start');
+	  });
+	  return false;
+  });
 
 });
 function timesup(){
@@ -124,6 +142,15 @@ function doonoff(ckbtn){
 	}else if(running_sta=='1'){
 	  $('#timep').pietimer('pause');
 	  $('#btnoff').prop("disabled", true);
+	  
+	  var cctime=$('#timep').text(); 
+	  cctime=cctime.substring(0,cctime.length-2); 
+	  cctime=parseInt(cctime); 
+	  if(isNaN(cctime)){
+		cctime=1;
+	  }
+	  Gcaitime=cctime;
+	
 	  $.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'fm'},function(r){
 		  //var rj=JSON.parse(r);
 		  $('#btnon').prop("disabled", false);
@@ -361,11 +388,12 @@ function do_show_cai_class(){
           </div>
       </div>
   {% endfor %}
+    	<input type="button" id="addtime" class="abtn" style="width:100%" value="增加20秒">
   </div>
 </div>
 <div class="right_div">
   <div class="ctrl_div">  
-    <div style="padding-bottom:15px">
+    <div style="padding-bottom:10px">
     	<span id="namescreen" class="namescreen" style="width:30%">v7</span> ℃ &nbsp; &nbsp;
     	<input type="button" id="cntBtn" class="abtn disable_when_running " style="width:30%" value="连接">
     	<input type="button" id="setBtn" class="abtn disable_when_running " style="width:30%" value="设置"  onClick="do_show_setting()">
