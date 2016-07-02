@@ -185,9 +185,9 @@ def return_sta(request):
         
         elif po['m'] == 'addtime':
             watchdog=0
-            print('old stop at'+str(eIntval1))
+            #print('old stop at'+str(eIntval1))
             eIntval1+=int(po['d'])
-            print('shall stop at '+str(eIntval1))
+            #print('shall stop at '+str(eIntval1))
             tbody= '{"addtime":'+po['d']+'}'
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
                 
@@ -356,7 +356,7 @@ def loop_info():
                 sta_shell=2
                 GPIO.output(io_jr, 1)
                 GPIO.output(io_zq, 1)
-                print('eTimer1 end,jr=1,zq=1,'+str(time.time()))
+                print('eTimer1 end11,'+str(time.time()))
                 eTimer1=False
                 #huixiqi=120
                 #GPIO.output(io_hx, 0)
