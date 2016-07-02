@@ -136,14 +136,15 @@ function timesup(){
 function doonoff(ckbtn){
 	if(running_sta=='0'){
 	  $('#timep').pietimer('start');
-	  $('#btnon').prop("disabled", true);
+	  $('#btnon').attr("disabled","disabled");
+	  $('#btnoff').removeAttr("disabled");
 	  $.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'fm',t:Gcaitime},function(r){
 		  //var rj=JSON.parse(r);
-		  $('#btnoff').prop("disabled", false);
+		  //$('#btnoff').prop("disabled", false);
 	  });
 	}else if(running_sta=='1'){
 	  $('#timep').pietimer('pause');
-	  $('#btnoff').prop("disabled", true);
+	  //$('#btnoff').prop("disabled", true);
 	  
 	  var cctime=$('#timep').text(); 
 	  cctime=cctime.substring(0,cctime.length-2); 
@@ -153,9 +154,10 @@ function doonoff(ckbtn){
 	  }
 	  Gcaitime=cctime;
 	
+	  $('#btnon').removeAttr("disabled");
+	  $('#btnoff').attr("disabled","disabled");
 	  $.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'fm'},function(r){
 		  //var rj=JSON.parse(r);
-		  $('#btnon').prop("disabled", false);
 	  });
 	}
 	return false;

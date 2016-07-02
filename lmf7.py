@@ -373,12 +373,12 @@ def loop_info():
             elif shell_ud_t2u > 0:
                 shell_ud_t2u-=1
             elif shell_ud_t2u == 0:
-                p.ChangeDutyCycle(6)
+                p.ChangeDutyCycle(9)
                 shell_ud_t2u =-1
             elif shell_ud_t2d > 0:
                 shell_ud_t2d-=1
             elif shell_ud_t2d == 0:
-                p.ChangeDutyCycle(6)
+                p.ChangeDutyCycle(9)
                 shell_ud_t2d =-1
             elif shell_ud_t3 > 0:
                 shell_ud_t3-=1
