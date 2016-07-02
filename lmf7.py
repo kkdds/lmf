@@ -238,21 +238,23 @@ def return_sta(request):
         elif po['m'] == 'shell':
             GPIO.output(moto_1_f, 1)
             GPIO.output(moto_1_r, 1)
-            shell_ud_t1=shell_ud_t1_set
-            shell_ud_t3=shell_ud_t3_set
+            shell_ud_t1=time.time()+shell_ud_t1_set/50
+            #shell_ud_t3=time.time()+shell_ud_t3_set/50
             if po['d']== 'up' and sta_shell!=1:
                 GPIO.output(moto_1_r, 0)
                 p.ChangeDutyCycle(40)
-                shell_ud_t2u=shell_ud_t2u_set
-                shell_ud_t2d=-1
+                shell_ud_t2u=shell_ud_t1+shell_ud_t2u_set/50
+                shell_ud_t3=shell_ud_t2u+shell_ud_t3_set/50
+                shell_ud_t2d=2467468567
                 shell_up_down=0
                 sta_shell=1
                 tbody= '{"a":"shell","b":"up"}'
             elif po['d']== 'dw' and sta_shell!=1:
                 GPIO.output(moto_1_f, 0)
                 p.ChangeDutyCycle(40)
-                shell_ud_t2u=-1
-                shell_ud_t2d=shell_ud_t2d_set
+                shell_ud_t2u=2467468567
+                shell_ud_t2d=shell_ud_t1+shell_ud_t2d_set/50
+                shell_ud_t3=shell_ud_t2d+shell_ud_t3_set/50
                 shell_up_down=2
                 sta_shell=1
                 tbody= '{"a":"shell","b":"dw"}'
@@ -365,25 +367,17 @@ def loop_info():
         #if shell_up_down != 0:
         if sta_shell==1:
             #sta_shell=1
-            if shell_ud_t1 > 0:
-                shell_ud_t1-=1
-            elif shell_ud_t1 == 0:
+            if shell_ud_t1 <= time.time():
+                shell_ud_t1=2467468567
                 p.ChangeDutyCycle(65)
-                shell_ud_t1 =-1
-            elif shell_ud_t2u > 0:
-                shell_ud_t2u-=1
-            elif shell_ud_t2u == 0:
+            elif shell_ud_t2u <= time.time():
+                shell_ud_t2u=2467468567
                 p.ChangeDutyCycle(9)
-                shell_ud_t2u =-1
-            elif shell_ud_t2d > 0:
-                shell_ud_t2d-=1
-            elif shell_ud_t2d == 0:
+            elif shell_ud_t2d <= time.time():
+                shell_ud_t2d=2467468567
                 p.ChangeDutyCycle(9)
-                shell_ud_t2d =-1
-            elif shell_ud_t3 > 0:
-                shell_ud_t3-=1
-            elif shell_ud_t3 == 0:
-                shell_ud_t3 =-1
+            elif shell_ud_t3 <= time.time():
+                shell_ud_t3=2467468567
                 p.ChangeDutyCycle(0)
                 if shell_up_down == 0:
                     sta_shell=0
