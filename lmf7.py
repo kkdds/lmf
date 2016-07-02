@@ -248,6 +248,7 @@ def return_sta(request):
                 tbody= '{"a":"shell","b":"dw"}'
             elif sta_shell==1:
                 sta_shell=2
+                t.cancel()
                 p.ChangeDutyCycle(0)
                 tbody= '{"a":"shell","b":"stop"}'
             print(tbody)
