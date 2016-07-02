@@ -58,9 +58,7 @@ $(document).ready(function(){
   });
 	
   $(".scr_div").click(function(){
-	  if(running_sta==true){
-		  return false;
-	  }
+	  if(running_sta==true){return false;}
 	  $(".scr_div").css("background-image","none");
 	  $(".item_div").css("display","block");
 	  $(".scr_div").scrollTop(Gscly);
@@ -71,9 +69,7 @@ $(document).ready(function(){
   });
 
   $(".imgzone").click(function(){
-	  if(running_sta==true){
-		  return false;
-	  }
+	  if(running_sta==true){return false;}
 	  Gcaitime=$(this).parent().attr("caitime");
 	  $('#timep').pietimer({seconds: Gcaitime},function(){timesup();})
 	  Gvname=$(this).parent().attr("vname");
@@ -103,7 +99,7 @@ $(document).ready(function(){
 	  return false;
   });
   $("#addtime").click(function(){
-	  if(running_sta=='0'){return false;}
+	  if(running_sta==false){return false;}
 	  $.post('sta',{p:$('#pwd').val(),m:'addtime',d:20},function(r){
 		  //alert('add');
 		  $('#timep').pietimer('pause');
@@ -128,6 +124,11 @@ function timesup(){
 	$('#btnoff').prop("disabled", true);
 	running_sta=false;
 	shell_sta=false;
+	
+	$(".scr_div").css("background-image","none");//完成后回到原界面
+	$(".item_div").css("display","block");
+	$(".scr_div").scrollTop(Gscly);
+	do_show_cai_class();
 	//$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'fm'},function(r){
 		//var rj=JSON.parse(r);
 	//});
