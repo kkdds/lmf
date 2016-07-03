@@ -242,7 +242,7 @@ def return_sta(request):
             elif po['d']== 'dw' and sta_shell!=1:
                 t = threading.Timer(shell_ud_t1_set/1000, tt2)
                 GPIO.output(moto_1_f, 0)
-                p.ChangeDutyCycle(40)
+                p.ChangeDutyCycle(30)
                 t.start()
                 shell_up_down=2
                 sta_shell=1
@@ -276,6 +276,7 @@ def tt2():
     else:
         shell_t2=shell_ud_t2d_set/1000
     t = threading.Timer(shell_t2, tt3)
+    p.ChangeDutyCycle(65)
     t.start()
     #print('tt2 '+str(ttim-time.time()))
 
@@ -283,6 +284,7 @@ def tt3():
     global shell_ud_t3_set,t
     t = threading.Timer(shell_ud_t3_set/1000, ttfin)
     t.start()
+    p.ChangeDutyCycle(9)
     #print('tt3 '+str(ttim-time.time()))
 
 def ttfin():
