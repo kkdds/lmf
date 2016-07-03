@@ -234,7 +234,7 @@ def return_sta(request):
             if po['d']== 'up' and sta_shell!=1:
                 t = threading.Timer(shell_ud_t1_set/1000, tt2)
                 GPIO.output(moto_1_r, 0)
-                p.ChangeDutyCycle(40)                
+                p.ChangeDutyCycle(30)                
                 t.start()
                 shell_up_down=0
                 sta_shell=1
@@ -248,9 +248,9 @@ def return_sta(request):
                 sta_shell=1
                 tbody= '{"a":"shell","b":"dw"}'
             elif sta_shell==1:
-                sta_shell=2
-                t.cancel()
-                p.ChangeDutyCycle(0)
+                #sta_shell=2
+                #t.cancel()
+                #p.ChangeDutyCycle(0)
                 tbody= '{"a":"shell","b":"stop"}'
             print(tbody)
             ttim=time.time()
@@ -276,16 +276,23 @@ def tt2():
     else:
         shell_t2=shell_ud_t2d_set/1000
     t = threading.Timer(shell_t2, tt3)
-    p.ChangeDutyCycle(65)
+    p.ChangeDutyCycle(50)
     t.start()
     #print('tt2 '+str(ttim-time.time()))
 
 def tt3():
     global shell_ud_t3_set,t
-    t = threading.Timer(shell_ud_t3_set/1000, ttfin)
+    t = threading.Timer(shell_ud_t3_set/1000, tt4)
     t.start()
     p.ChangeDutyCycle(9)
     #print('tt3 '+str(ttim-time.time()))
+
+def tt4():
+    global shell_ud_t3_set,t
+    t = threading.Timer(3/1000, ttfin)
+    t.start()
+    p.ChangeDutyCycle(4)
+    #print('tt4 '+str(ttim-time.time()))
 
 def ttfin():
     global ttim,shell_up_down,sta_shell
