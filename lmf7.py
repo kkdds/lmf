@@ -190,7 +190,7 @@ def return_sta(request):
                 eIntval1=int(time.time())+int(delaytime)
                 ttim=time.time()
                 print('eTimer1 start')
-                sta_shell=1
+                #sta_shell=1
                 sta_onoff=1
                 GPIO.output(io_zq, 0)
                 GPIO.output(io_jr, 0)
@@ -229,11 +229,10 @@ def return_sta(request):
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
                 
         elif po['m'] == 'shell':
-            GPIO.output(moto_1_f, 1)
-            GPIO.output(moto_1_r, 1)
             if po['d']== 'up' and sta_shell!=1:
                 t = threading.Timer(shell_ud_t1_set/1000, tt2)
                 GPIO.output(moto_1_r, 0)
+                GPIO.output(moto_1_f, 1)
                 p.ChangeDutyCycle(30)                
                 t.start()
                 shell_up_down=0
@@ -241,6 +240,7 @@ def return_sta(request):
                 tbody= '{"a":"shell","b":"up"}'
             elif po['d']== 'dw' and sta_shell!=1:
                 t = threading.Timer(shell_ud_t1_set/1000, tt2)
+                GPIO.output(moto_1_r, 1)
                 GPIO.output(moto_1_f, 0)
                 p.ChangeDutyCycle(30)
                 t.start()
@@ -248,7 +248,7 @@ def return_sta(request):
                 sta_shell=1
                 tbody= '{"a":"shell","b":"dw"}'
             elif sta_shell==1:
-                #sta_shell=2
+                #sta_shell=1
                 #t.cancel()
                 #p.ChangeDutyCycle(0)
                 tbody= '{"a":"shell","b":"stop"}'
@@ -285,14 +285,14 @@ def tt3():
     t = threading.Timer(shell_ud_t3_set/1000, tt4)
     t.start()
     p.ChangeDutyCycle(9)
-    #print('tt3 '+str(ttim-time.time()))
+    print('tt3 '+str(ttim-time.time()))
 
 def tt4():
-    global shell_ud_t3_set,t
-    t = threading.Timer(3/1000, ttfin)
+    global t
+    t = threading.Timer(3, ttfin)
     t.start()
     p.ChangeDutyCycle(4)
-    #print('tt4 '+str(ttim-time.time()))
+    print('tt4 '+str(ttim-time.time()))
 
 def ttfin():
     global ttim,shell_up_down,sta_shell

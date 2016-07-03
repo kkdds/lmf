@@ -60,7 +60,7 @@ $(document).ready(function(){
 	  $(".item_div").css("display","block");
 	  $(".scr_div").scrollTop(Gscly);
 	  //$(".menubtn").prop("disabled",false);
-	  //$(".menubtn:eq(1)").prop("disabled",true);
+	  //$(".menubtn:eq(1)").prop("disabled",true);	  
 	  do_show_cai_class();
 	  return false;
   });
@@ -131,14 +131,16 @@ function timesup(){
 	//});
 }
 function doon(ckbtn){
-	  $('#timep').pietimer('start');
-	  $('#btnon').attr("disabled","disabled");
-	  $('#btnoff').removeAttr("disabled");
+	if($(".scr_div").css("background-image")=="none"){return false;}
+	$('#timep').pietimer('start');
+	$('#btnon').attr("disabled","disabled");
+	$('#btnoff').removeAttr("disabled");
 	if(running_sta=='0'){
 		running_sta=='1';
 		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'fm',t:Gcaitime},function(r){
 			$('#btnon').attr("disabled","disabled");
 			$('#btnoff').removeAttr("disabled");
+			$('.shellbtn').attr("disabled","disabled");
 		});
 	}
 	return false;
@@ -161,7 +163,8 @@ function dooff(ckbtn){
 		running_sta=='0';
 		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'fm'},function(r){
 			$('#btnon').removeAttr("disabled");
-			$('#btnoff').attr("disabled","disabled");
+			$('#btnoff').attr("disabled","disabled");			
+			$('.shellbtn').removeAttr("disabled");
 		});
 	}
 	return false;
@@ -184,14 +187,15 @@ function update_sta(){
 	if(shell_sta=='2'){
 		//$('#onoff').prop("disabled",false);
 	}
-	if(running_sta=='0'){
-		//$('.disable_when_running').prop("disabled",false);
+	if(running_sta=='0' && sta_shaokao==true && sta_slave==true){
 		$('#btnon').removeAttr("disabled");
 		$('#btnoff').attr("disabled","disabled");
+		$('.disable_when_running').removeAttr("disabled");
+		$('.shellbtn').removeAttr("disabled");
 	}
 	if(running_sta=='1'){
-		//$('.disable_when_running').prop("disabled",true);
 		$('#btnoff').removeAttr("disabled");
+		$('.disable_when_running').attr("disabled","disabled");
 	}  
 }
 function playvideo(){
@@ -219,10 +223,18 @@ function slave_on_off(obj){
 	if(sta_slave){
 	  $.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'fs',t:1},function(r){
 		  $(obj).val('保温 开');
+		  $('#btnon').attr("disabled","disabled");
+		  $('#btnoff').attr("disabled","disabled");
+		  $('#btn_sk').attr("disabled","disabled");
+		  $('.shellbtn').attr("disabled","disabled");
 	  });
 	}else{
 	  $.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'fs'},function(r){
 		  $(obj).val('保温 关');
+		  $('#btnon').removeAttr("disabled");
+		  $('#btnoff').removeAttr("disabled");
+		  $('#btn_sk').removeAttr("disabled");
+		  $('.shellbtn').removeAttr("disabled");
 	  });
 	}
 	sta_slave=!sta_slave;	
@@ -232,12 +244,16 @@ function shaokao_on_off(){
 	if(sta_shaokao){
 	  $.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'sk',t:1},function(r){
 		  $('#btn_sk').val('烧烤 开');
-		  $('.disable_when_running').prop("disabled",true);
+		  $('#btnon').attr("disabled","disabled");
+		  $('#btnoff').attr("disabled","disabled");
+		  $('#btn_bw').attr("disabled","disabled");
 	  });
 	}else{
 	  $.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'sk'},function(r){
 		  $('#btn_sk').val('烧烤 关');
-		  $('.disable_when_running').prop("disabled",false);
+		  $('#btnon').removeAttr("disabled");
+		  $('#btnoff').removeAttr("disabled");
+		  $('#btn_bw').removeAttr("disabled");
 	  });
 	}
 	sta_shaokao=!sta_shaokao;	
@@ -445,16 +461,16 @@ function do_show_cai_class(){
 <div class="modal" id="caitmp"></div>
 <div id="run_type_def" style="display:none">
     <div class="btn_div runscr">
-        <input type="button" class="abtn " value="盖子 开" onClick="shell_up()">
-        <input type="button" class="abtn " value="盖子 合" onClick="shell_dw()">
+        <input type="button" class="abtn shellbtn" value="盖子 开" onClick="shell_up()">
+        <input type="button" class="abtn shellbtn" value="盖子 合" onClick="shell_dw()">
     </div>
     <div class="btn_div runscr">
-        <input type="button" id="btnon" class="abtn disable_when_running" value="开始" onClick="doon(this)">
+        <input type="button" id="btnon" class="abtn" value="开始" onClick="doon(this)">
         <input type="button" id="btnoff" class="abtn" value="结束" onClick="dooff(this)">
     </div>
     <div class="btn_div runscr">
         <input type="button" class="abtn disable_when_running" id="btn_bw" value="保温" onClick="slave_on_off(this)">
-        <input type="button" class="abtn " id="btn_sk" value="烧烤" onClick="shaokao_on_off()">
+        <input type="button" class="abtn disable_when_running" id="btn_sk" value="烧烤" onClick="shaokao_on_off()">
     </div>
     <div class="btn_div runscr">
       <input type="button" class="abtn" value="播放视频" onClick="playvideo('01')">
