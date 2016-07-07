@@ -82,8 +82,7 @@ background-size:100% 100%;}
 }
 .abtn{
   font-size:1.8em;
-  /*line-height:48px;
-  height:48px;*/
+  /*line-height:48px;*/
   padding:12px 0;
   width:45%;
   color:#ffffff;
@@ -107,16 +106,22 @@ background-size:100% 100%;}
   display:inline-block;
   text-decoration:none;
 }
+.runscr{
+  height:21%;
+}
+#run_type div .abtn{
+  height:100%;
+}
 .abtn:disabled{
   background-color:#FF3333;
 }
 .abtn:active{
   background-color:#FBD88F;
 }
-
 .menubtn{
   font-size:1.1em;
   padding:6px 0;
+  height:90%;
   width:90%;
   color:#000000;
   background-color:#F8B62C;

@@ -58,6 +58,7 @@ $(document).ready(function(){
 	  if(running_sta==true){return false;}
 	  $(".scr_div").css("background-image","none");
 	  $(".item_div").css("display","block");
+	  $("#addtime").css("display","none");	  
 	  $(".scr_div").scrollTop(Gscly);
 	  //$(".menubtn").prop("disabled",false);
 	  //$(".menubtn:eq(1)").prop("disabled",true);	  
@@ -74,6 +75,7 @@ $(document).ready(function(){
 	  $(".scr_div").css("background-image","url('"+Gpcai+"')");
 	  Gscly=$(".scr_div").scrollTop();
 	  $(".item_div").css("display","none");
+	  $("#addtime").css("display","block");	  
 	  
 	  caiclass=$(this).parent().attr("caiclass");
 	  if(caiclass=='30'){
@@ -412,20 +414,20 @@ function do_show_cai_class(){
           </div>
       </div>
   {% endfor %}
-    	<input type="button" id="addtime" class="abtn" style="width:100%" value="增加20秒">
+    	<input type="button" id="addtime" class="abtn" style="width:100%; display:none" value="增加20秒">
   </div>
 </div>
 <div class="right_div">
   <div class="ctrl_div">  
-    <div style="padding-bottom:10px">
+    <div style="padding-bottom:10px;height:13%">
     	<span id="namescreen" class="namescreen" style="width:30%">v7</span> ℃ &nbsp; &nbsp;
     	<input type="button" id="cntBtn" class="abtn disable_when_running " style="width:30%" value="连接">
     	<input type="button" id="setBtn" class="abtn disable_when_running " style="width:30%" value="设置" onClick="do_show_setting()">
     </div>
-    <div class="btn_div runscr modalLink2">
+    <div class="btn_div runscr modalLink2" style="height:22%">
       <p id="timep"></p>            
     </div>
-    <div id="run_type"></div>
+    <div id="run_type" style="height:65%"></div>    
   </div>
 </div>
 
