@@ -276,7 +276,7 @@ def tt2():
     else:
         shell_t2=shell_ud_t2d_set/1000
     t = threading.Timer(shell_t2, tt3)
-    p.ChangeDutyCycle(99)
+    p.ChangeDutyCycle(100)
     t.start()
     #print('tt2 '+str(ttim-time.time()))
 
@@ -284,12 +284,12 @@ def tt3():
     global shell_ud_t3_set,t
     t = threading.Timer(shell_ud_t3_set/1000, tt4)
     t.start()
-    p.ChangeDutyCycle(9)
+    p.ChangeDutyCycle(30)
     #print('tt3 '+str(ttim-time.time()))
 
 def tt4():
     global t
-    t = threading.Timer(3, ttfin)
+    t = threading.Timer(1, ttfin)
     t.start()
     p.ChangeDutyCycle(4)
     #print('tt4 '+str(ttim-time.time()))
