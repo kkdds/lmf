@@ -49,7 +49,7 @@ moto_1_r=26 #反转
 GPIO.setup(moto_1_f, GPIO.OUT)
 GPIO.setup(moto_1_r, GPIO.OUT)
 GPIO.setup(moto_1_p, GPIO.OUT)
-p = GPIO.PWM(moto_1_p, 50)
+p = GPIO.PWM(moto_1_p, 1500)
 p.start(0)
 
 moto_2_p=21 #脉宽输出
@@ -58,7 +58,7 @@ moto_2_r=16 #反转
 GPIO.setup(moto_2_f, GPIO.OUT)
 GPIO.setup(moto_2_r, GPIO.OUT)
 GPIO.setup(moto_2_p, GPIO.OUT)
-p2 = GPIO.PWM(moto_2_p, 50)
+p2 = GPIO.PWM(moto_2_p, 1500)
 p2.start(0)
 
 
@@ -233,7 +233,7 @@ def return_sta(request):
                 t = threading.Timer(shell_ud_t1_set/1000, tt2)
                 GPIO.output(moto_1_r, 0)
                 GPIO.output(moto_1_f, 1)
-                p.ChangeDutyCycle(30)                
+                p.ChangeDutyCycle(100)                
                 t.start()
                 shell_up_down=0
                 sta_shell=1
@@ -242,7 +242,7 @@ def return_sta(request):
                 t = threading.Timer(shell_ud_t1_set/1000, tt2)
                 GPIO.output(moto_1_r, 1)
                 GPIO.output(moto_1_f, 0)
-                p.ChangeDutyCycle(30)
+                p.ChangeDutyCycle(100)
                 t.start()
                 shell_up_down=2
                 sta_shell=1
@@ -282,9 +282,12 @@ def tt2():
 
 def tt3():
     global shell_ud_t3_set,t
-    t = threading.Timer(shell_ud_t3_set/1000, tt4)
-    t.start()
-    p.ChangeDutyCycle(30)
+    t = threading.Timer(shell_ud_t3_set/1000, ttfin)
+    if shell_up_down==0:
+        p.ChangeDutyCycle(50)
+    else:
+        p.ChangeDutyCycle(25)
+    t.start()    
     #print('tt3 '+str(ttim-time.time()))
 
 def tt4():
