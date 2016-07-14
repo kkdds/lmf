@@ -220,6 +220,9 @@ def return_sta(request):
                 tbody= '{"a":"bw","b":"off"}'
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 1)
+                huixiqi=120
+                GPIO.output(io_hx, 0)
+                print('huixiqi on')
                 tbody= '{"a":"sk","b":"off"}'
             elif po['d']== 'ms':
                 GPIO.output(io_zq, 1)
@@ -384,9 +387,9 @@ def loop_info():
                 GPIO.output(io_zq, 1)
                 print('eTimer1 end '+str(time.time()-ttim))
                 eTimer1=False
-                #huixiqi=120
-                #GPIO.output(io_hx, 0)
-                #print('huixiqi on')
+                huixiqi=120
+                GPIO.output(io_hx, 0)
+                print('huixiqi on')
                 
     return 1
 
