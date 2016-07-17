@@ -375,7 +375,7 @@ def loop_info():
             
         if huixiqi>0:
             huixiqi-=1
-            print(huixiqi)
+            #print(huixiqi)
         elif huixiqi==0:
             huixiqi=-1
             GPIO.output(io_hx, 1)
