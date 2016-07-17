@@ -365,6 +365,9 @@ function do_show_cai_class(){
 	case '70':
 		$(".caiclass70").css("display","block");
 	break;
+	case '80':
+		$(".caiclass80").css("display","block");
+	break;
 	}
 }
 </script>
@@ -388,17 +391,20 @@ function do_show_cai_class(){
     <div class="classbtn_div">
         <input type="button" class="menubtn" value="味烹" onClick="show_cai_class('60',this)">
     </div>
-    <div class="classbtn_div">
+<!--    <div class="classbtn_div">
         <input type="button" class="menubtn" value="冷菜" onClick="show_cai_class('30',this)">
-    </div>
-    <div class="classbtn_div">
-        <input type="button" class="menubtn" value="泉锅" onClick="show_cai_class('40',this)">
-    </div>
+    </div>-->
     <div class="classbtn_div">
         <input type="button" class="menubtn" value="汤品" onClick="show_cai_class('50',this)">
     </div>
     <div class="classbtn_div">
         <input type="button" class="menubtn" value="点心甜品" onClick="show_cai_class('20',this)">
+    </div>
+    <div class="classbtn_div">
+        <input type="button" class="menubtn" value="泉锅" onClick="show_cai_class('40',this)">
+    </div>
+    <div class="classbtn_div">
+        <input type="button" class="menubtn" value="烧烤" onClick="show_cai_class('80',this)">
     </div>
   </div>
 </div>
@@ -492,6 +498,24 @@ function do_show_cai_class(){
     <div class="btn_div runscr">
         <input type="button" id="btnqg_sml_stm" class="abtn " value="保温" onClick="slave_on_off(this)">
         <input type="button" id="btnqg_big_stm"  class="abtn "value="蒸汽" onClick="main_steam_on_off(this)">
+    </div>
+    <div class="btn_div runscr">
+      <input type="button" class="abtn" value="播放视频" onClick="playvideo('01')">
+      <input type="button" class="abtn" value="停止播放" onClick="stopvideo()">
+    </div>
+</div>
+<div id="run_type_80" style="display:none">
+    <div class="btn_div runscr">
+        <input type="button" class="abtn " value="盖子 开" onClick="shell_up()">
+        <input type="button" class="abtn " value="盖子 合" onClick="shell_dw()">
+    </div>
+    <div class="btn_div runscr">
+        <input type="button" id="btnsk_sml_stm" class="abtn " value="保温" onClick="slave_on_off(this)">
+        <input type="button" id="btnsk_big_stm"  class="abtn "value="蒸汽" onClick="main_steam_on_off(this)">
+    </div>
+    <div class="btn_div runscr">
+        <input type="button" id="btnsk_sk" class="abtn " value="烧烤" onClick="slave_on_off(this)">
+        <input type="button" id="btnsk_end"  class="abtn "value="结束" onClick="main_steam_on_off(this)">
     </div>
     <div class="btn_div runscr">
       <input type="button" class="abtn" value="播放视频" onClick="playvideo('01')">

@@ -157,7 +157,7 @@ running_sta
 @asyncio.coroutine
 def return_sta(request):
     global eTimer1,eIntval1,eTimer2,eIntval2,sta_onoff,watchdog
-    global shell_up_down,sta_shell
+    global shell_up_down,sta_shell,huixiqi
     global stapwd,setpwd,softPath,tempeture_1,ttim,t
 
     hhdd=[('Access-Control-Allow-Origin','*')]
@@ -200,6 +200,7 @@ def return_sta(request):
                 tbody= '{"a":"bw","b":"on"}'
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 0)
+                GPIO.output(io_hx, 0)
                 tbody= '{"a":"sk","b":"on"}'
             elif po['d']== 'ms':
                 GPIO.output(io_zq, 0)
@@ -220,7 +221,7 @@ def return_sta(request):
                 tbody= '{"a":"bw","b":"off"}'
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 1)
-                huixiqi=120
+                huixiqi=1500
                 GPIO.output(io_hx, 0)
                 print('huixiqi on')
                 tbody= '{"a":"sk","b":"off"}'
@@ -362,7 +363,7 @@ def loop_info():
     while True:
         yield from asyncio.sleep(0.02)
         watchdog+=1
-        if watchdog>200:
+        if watchdog>250:
             watchdog=0;
             sta_onoff=0
             print('watchdog')
@@ -373,9 +374,10 @@ def loop_info():
             GPIO.output(io_hx, 1)
             
         if huixiqi>0:
-            huixiqi-=1;            
-        else:
-            #huixiqi=0
+            huixiqi-=1
+            print(huixiqi)
+        elif huixiqi==0:
+            huixiqi=-1
             GPIO.output(io_hx, 1)
                    
         if eTimer1==True:
