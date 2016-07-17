@@ -115,9 +115,12 @@ background-size:100% 100%;}
 .abtn:disabled{
   background-color:#FF3333;
 }
-.abtn:active{
-  background-color:#FBD88F;
+.running{
+  background-color:#33cc33;
 }
+/*.abtn:active{
+  background-color:#FBD88F;
+}*/
 .menubtn{
   font-size:1.1em;
   padding:6px 0;
@@ -148,7 +151,7 @@ background-size:100% 100%;}
   text-decoration:none;
 }
 .menubtn:disabled{
-  background-color:#06cbe7;
+  background-color:#FF3333;
 }
 .classsel{
   background-color:#a6cbe7;

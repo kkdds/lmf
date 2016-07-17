@@ -195,17 +195,23 @@ def return_sta(request):
                 GPIO.output(io_zq, 0)
                 GPIO.output(io_jr, 0)
                 tbody= '{"a":"zq+jr","b":"on"}'
-            elif po['d']== 'fs':
+
+            elif po['d']== 'ms':
+                GPIO.output(io_zq, 0)
+                GPIO.output(io_jr, 0)
+                sta_onoff=1
+                tbody= '{"a":"ms","b":"on"}'
+
+            elif po['d']== 'zq':
+                GPIO.output(io_zq, 0)
+                tbody= '{"a":"zq","b":"on"}'
+            elif po['d']== 'bw':
                 GPIO.output(io_bw, 0)
                 tbody= '{"a":"bw","b":"on"}'
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 0)
                 GPIO.output(io_hx, 0)
                 tbody= '{"a":"sk","b":"on"}'
-            elif po['d']== 'ms':
-                GPIO.output(io_zq, 0)
-                GPIO.output(io_jr, 0)
-                tbody= '{"a":"ms","b":"on"}'
             print(tbody)
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
                 
@@ -216,19 +222,32 @@ def return_sta(request):
                 GPIO.output(io_jr, 1)
                 eTimer1=False
                 tbody= '{"a":"zq+jr","b":"off"}'
-            elif po['d']== 'fs':
+
+            elif po['d']== 'ms':
+                GPIO.output(io_zq, 1)
+                GPIO.output(io_jr, 1)
+                sta_onoff=0
+                tbody= '{"a":"ms","b":"off"}'
+                
+            elif po['d']== 'zq':
+                GPIO.output(io_zq, 1)
+                tbody= '{"a":"zq","b":"off"}'
+            elif po['d']== 'bw':
                 GPIO.output(io_bw, 1)
                 tbody= '{"a":"bw","b":"off"}'
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 1)
-                huixiqi=1500
+                huixiqi=150
                 GPIO.output(io_hx, 0)
                 print('huixiqi on')
                 tbody= '{"a":"sk","b":"off"}'
-            elif po['d']== 'ms':
+            elif po['d']== 'all':
                 GPIO.output(io_zq, 1)
+                GPIO.output(io_bw, 1)
+                GPIO.output(io_sk, 1)
                 GPIO.output(io_jr, 1)
-                tbody= '{"a":"ms","b":"off"}'
+                huixiqi=150
+                tbody= '{"a":"all","b":"off"}'
             print(tbody)
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
                 
