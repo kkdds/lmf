@@ -221,6 +221,9 @@ def return_sta(request):
                 GPIO.output(io_zq, 1)
                 GPIO.output(io_jr, 1)
                 eTimer1=False
+                huixiqi=100
+                GPIO.output(io_hx, 0)
+                print('huixiqi on fm')
                 tbody= '{"a":"zq+jr","b":"off"}'
 
             elif po['d']== 'ms':
@@ -237,7 +240,7 @@ def return_sta(request):
                 tbody= '{"a":"bw","b":"off"}'
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 1)
-                huixiqi=150
+                huixiqi=200
                 GPIO.output(io_hx, 0)
                 print('huixiqi on')
                 tbody= '{"a":"sk","b":"off"}'
@@ -246,7 +249,7 @@ def return_sta(request):
                 GPIO.output(io_bw, 1)
                 GPIO.output(io_sk, 1)
                 GPIO.output(io_jr, 1)
-                huixiqi=150
+                huixiqi=200
                 tbody= '{"a":"all","b":"off"}'
             print(tbody)
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
@@ -380,9 +383,9 @@ def loop_info():
     global eTimer1,eIntval1,eTimer2,eIntval2,sta_shell,sta_onoff
     global watchdog,huixiqi,p,ttim
     while True:
-        yield from asyncio.sleep(0.02)
+        yield from asyncio.sleep(0.1)
         watchdog+=1
-        if watchdog>250:
+        if watchdog>150:
             watchdog=0;
             sta_onoff=0
             print('watchdog')
@@ -408,9 +411,9 @@ def loop_info():
                 GPIO.output(io_zq, 1)
                 print('eTimer1 end '+str(time.time()-ttim))
                 eTimer1=False
-                huixiqi=120
+                huixiqi=100
                 GPIO.output(io_hx, 0)
-                print('huixiqi on')
+                print('huixiqi on etimer1')
                 
     return 1
 
