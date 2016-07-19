@@ -205,6 +205,10 @@ def return_sta(request):
             elif po['d']== 'zq':
                 GPIO.output(io_zq, 0)
                 tbody= '{"a":"zq","b":"on"}'
+                eIntval1=int(time.time())+int(delaytime)
+                ttim=time.time()
+                eTimer1=True
+                print('eTimer1 start zp')
             elif po['d']== 'bw':
                 GPIO.output(io_bw, 0)
                 tbody= '{"a":"bw","b":"on"}'
@@ -234,7 +238,10 @@ def return_sta(request):
                 tbody= '{"a":"ms","b":"off"}'
                 
             elif po['d']== 'zq':
-                GPIO.output(io_zq, 1)
+                sta_onoff=0
+                GPIO.output(io_zq, 1)                
+                eTimer1=False
+                print('eTimer1 off zq')
                 tbody= '{"a":"zq","b":"off"}'
             elif po['d']== 'bw':
                 GPIO.output(io_bw, 1)

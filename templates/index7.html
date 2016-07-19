@@ -122,13 +122,26 @@ $(document).ready(function(){
   
   $("#btnsk_big_stm").click(function(){
 	  if(main_steam){
-			$(this).val('蒸汽 开').addClass("running");
-		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'zq',t:1},function(r){
-		});
+		$(this).val('蒸汽 开').addClass("running");
+		
+		//doon(this);		
+		$('#timep').pietimer('start');
+		sta_running=false;
+		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'zq',t:Gcaitime},function(r){});		
+		//$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'zq',t:1},function(r){});
 	  }else{
-			$(this).val('蒸汽 关').removeClass("running");
-		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'zq'},function(r){
-		});
+		$(this).val('蒸汽 关').removeClass("running");
+		
+		$('#timep').pietimer('pause');		
+		var cctime=$('#timep').text(); 
+		cctime=cctime.substring(0,cctime.length-2); 
+		cctime=parseInt(cctime); 
+		if(isNaN(cctime)){
+		  cctime=1;
+		}
+		Gcaitime=cctime;
+	  
+		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'zq'},function(r){});
 	  }
 	  main_steam=!main_steam;	
 	  return false;
@@ -166,8 +179,8 @@ $(document).ready(function(){
 		sta_shaokao=true;
 		sta_slave=true;
 		main_steam=true;
-		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'all'},function(r){
-		});
+		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'all'},function(r){});
+		dooff(this);
 	  return false;
   });
 
@@ -177,8 +190,14 @@ function timesup(){
 	running_sta=false;
 	shell_sta=false;
 	sta_running=true;
-	$('#btn_bw').removeAttr("disabled");
 	
+	if(!main_steam){//烧烤模式不回原界面
+		$("#btnsk_big_stm").val('蒸汽 关').removeClass("running");
+		main_steam=true;
+		return false;
+	}
+	
+	$('#btn_bw').removeAttr("disabled");		
 	$(".scr_div").css("background-image","none");//完成后回到原界面
 	$(".item_div").css("display","block");
 	$(".scr_div").scrollTop(Gscly);
