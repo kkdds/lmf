@@ -211,6 +211,7 @@ def return_sta(request):
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 0)
                 GPIO.output(io_hx, 0)
+                huixiqi=-1
                 tbody= '{"a":"sk","b":"on"}'
             print(tbody)
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
