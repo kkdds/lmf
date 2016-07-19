@@ -240,16 +240,16 @@ def return_sta(request):
                 tbody= '{"a":"bw","b":"off"}'
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 1)
-                huixiqi=200
+                huixiqi=300
                 GPIO.output(io_hx, 0)
-                print('huixiqi on')
+                print('huixiqi on sk 30')
                 tbody= '{"a":"sk","b":"off"}'
             elif po['d']== 'all':
                 GPIO.output(io_zq, 1)
                 GPIO.output(io_bw, 1)
                 GPIO.output(io_sk, 1)
                 GPIO.output(io_jr, 1)
-                huixiqi=200
+                huixiqi=300
                 tbody= '{"a":"all","b":"off"}'
             print(tbody)
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
@@ -413,7 +413,7 @@ def loop_info():
                 eTimer1=False
                 huixiqi=100
                 GPIO.output(io_hx, 0)
-                print('huixiqi on etimer1')
+                print('huixiqi on etimer1 10')
                 
     return 1
 
