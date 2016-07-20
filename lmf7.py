@@ -229,7 +229,7 @@ def return_sta(request):
                 GPIO.output(io_zq, 1)
                 GPIO.output(io_jr, 1)
                 eTimer1=False
-                huixiqi=300
+                huixiqi=200
                 GPIO.output(io_hx, 0)
                 print('huixiqi on fm')
                 tbody= '{"a":"zq+jr","b":"off"}'
@@ -252,7 +252,7 @@ def return_sta(request):
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 1)
                 limsktime=-1
-                huixiqi=300
+                huixiqi=200
                 GPIO.output(io_hx, 0)
                 print('huixiqi on sk 30s')
                 tbody= '{"a":"sk","b":"off"}'
@@ -262,7 +262,7 @@ def return_sta(request):
                 GPIO.output(io_sk, 1)
                 GPIO.output(io_jr, 1)
                 limsktime=-1
-                huixiqi=300
+                huixiqi=200
                 tbody= '{"a":"all","b":"off"}'
             print(tbody)
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
@@ -436,7 +436,7 @@ def loop_info():
                 GPIO.output(io_zq, 1)
                 print('eTimer1 end '+str(time.time()-ttim))
                 eTimer1=False
-                huixiqi=300
+                huixiqi=200
                 GPIO.output(io_hx, 0)
                 print('huixiqi on etimer1 10')
                 
