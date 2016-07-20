@@ -125,9 +125,9 @@ def video(request):
     print(tbody)
     return web.Response(headers='' ,body=tbody.encode('utf-8'))
 
-huixiqi=0
 watchdog=0
-limsktime=0
+huixiqi=-1
+limsktime=-1
 
 eTimer1=False
 eIntval1=5
