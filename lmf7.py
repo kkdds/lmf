@@ -229,7 +229,7 @@ def return_sta(request):
                 GPIO.output(io_zq, 1)
                 GPIO.output(io_jr, 1)
                 eTimer1=False
-                huixiqi=100
+                huixiqi=300
                 GPIO.output(io_hx, 0)
                 print('huixiqi on fm')
                 tbody= '{"a":"zq+jr","b":"off"}'
@@ -436,7 +436,7 @@ def loop_info():
                 GPIO.output(io_zq, 1)
                 print('eTimer1 end '+str(time.time()-ttim))
                 eTimer1=False
-                huixiqi=100
+                huixiqi=300
                 GPIO.output(io_hx, 0)
                 print('huixiqi on etimer1 10')
                 
