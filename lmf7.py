@@ -159,7 +159,7 @@ running_sta
 @asyncio.coroutine
 def return_sta(request):
     global eTimer1,eIntval1,eTimer2,eIntval2,sta_onoff,watchdog
-    global shell_up_down,sta_shell,huixiqi,limsktime
+    global shell_up_down,sta_shell,huixiqi,limsktime,omx
     global stapwd,setpwd,softPath,tempeture_1,ttim,t
 
     hhdd=[('Access-Control-Allow-Origin','*')]
@@ -174,7 +174,16 @@ def return_sta(request):
         
         elif po['m'] == 'sta':
             watchdog=0
-            tbody= '{"shell_sta":'+str(sta_shell)+',"running_sta":'+str(sta_onoff)+',"tmp1":'+str(tempeture_1)+'}'
+            ttb='{"shell_sta":'+str(sta_shell)
+            ttb+=',"running_sta":'+str(sta_onoff)
+            ttb+=',"tmp1":'+str(tempeture_1)
+            if hasattr(omx,'sta_video')==False:
+                sta_video=0
+            else:
+                sta_video=omx.sta_video
+            ttb+=',"sta_video":'+str(sta_video)
+            ttb+='}'
+            tbody= ttb
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
         
         elif po['m'] == 'addtime':
@@ -204,6 +213,9 @@ def return_sta(request):
                 sta_onoff=1
                 tbody= '{"a":"ms","b":"on"}'
 
+            elif po['d']== 'hx':
+                GPIO.output(io_hx, 0)
+                tbody= '{"a":"hx","b":"on"}'
             elif po['d']== 'zq':
                 GPIO.output(io_zq, 0)
                 tbody= '{"a":"zq","b":"on"}'
@@ -239,12 +251,16 @@ def return_sta(request):
                 GPIO.output(io_jr, 1)
                 sta_onoff=0
                 tbody= '{"a":"ms","b":"off"}'
-                
+
+            elif po['d']== 'hx':
+                GPIO.output(io_hx, 1)
+                #print('io_hx off')
+                tbody= '{"a":"hx","b":"off"}'
             elif po['d']== 'zq':
                 sta_onoff=0
                 GPIO.output(io_zq, 1)                
                 eTimer1=False
-                print('eTimer1 off zq')
+                #print('eTimer1 off zq')
                 tbody= '{"a":"zq","b":"off"}'
             elif po['d']== 'bw':
                 GPIO.output(io_bw, 1)
@@ -458,6 +474,7 @@ def init(loop):
     app.router.add_static('/js',  softPath+'js')
     app.router.add_static('/image',  softPath+'image')
     app.router.add_static('/imagetmb', softPath+'imagetmb')
+    app.router.add_static('/voice', softPath+'voice')
     srv = yield from loop.create_server(app.make_handler(), '0.0.0.0', 9001)
     print(' v7 server started at http://0.0.0.0:9001...')               
     return srv

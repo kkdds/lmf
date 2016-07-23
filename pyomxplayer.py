@@ -16,13 +16,14 @@ class OMXPlayer(object):
     subtitles_visible = True
 
     _VOF=1
+    sta_video=2
 
     def __init__(self, mediafile, imgfile):
+        self.sta_video=1
         cmd = self._LAUNCH_CMD % (mediafile, '')
         self._IMG_FILE = imgfile
         #print(cmd)
         self._process = pexpect.spawn(cmd)
-
         self._end_thread = Thread(target=self._get_end)
         self._end_thread.start()
  
@@ -47,6 +48,7 @@ class OMXPlayer(object):
         self._process.send(self._QUIT_CMD)
         self._process.terminate(force=True)
         self._process = pexpect.spawn('feh -F '+self._IMG_FILE)
+        self.sta_video=0
 			
     def toggle_pause(self):
         if self._process.send(self._PAUSE_CMD):

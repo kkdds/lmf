@@ -19,8 +19,11 @@ var shell_sta='9';
 var running_sta='9';
 var sta_shaokao=true;
 var sta_slave=true;
-var main_steam=true;
+var sta_main=true;
 var sta_running=true;
+var video_onoff=true;
+var sta_huixi=true;
+var sta_wat=true;
 
 $(document).ready(function(){  
 	$('#timep').pietimer({seconds: Gcaitime},function(){timesup();})
@@ -28,10 +31,10 @@ $(document).ready(function(){
 	//$("#run_type").html($("#run_type_def").html());
 
     $('#cntBtn').modal({
-        trigger:'#cntBtn',         // id or class of link or button to trigger modal
-        olay:'div.overlay',            // id or class of overlay
-        modals:'div#modal1',           // id or class of modal
-        close:'.closeBtn'              // id or class of close button
+        trigger:'#cntBtn', // id or class of link or button to trigger modal
+        olay:'div.overlay', // id or class of overlay
+        modals:'div#modal1', // id or class of modal
+        close:'.closeBtn' // id or class of close button
     });
     $('.modalLink2').modal({
         trigger:'.modalLink2',
@@ -49,9 +52,8 @@ $(document).ready(function(){
   $("#setMtimebtn").click(function(){
 	  if(running_sta==true){return false;}
 	  var cctime=parseInt($('#setMtime').val()); 
-	  if(isNaN(cctime)){
-		  return false;
-	  }
+	  if(isNaN(cctime)){return false;}
+	  if(cctime>990){return false;}
 	  Gcaitime=cctime;
 	  $('#timep').pietimer({seconds:Gcaitime},function(){timesup();})
 	  $('div.overlay').hide();
@@ -121,8 +123,8 @@ $(document).ready(function(){
   });
   
   $("#btnsk_big_stm").click(function(){
-	  if(main_steam){
-		$(this).val('蒸汽 开').addClass("running");
+	  if(sta_main){
+		$(this).val('蒸汽 关').addClass("running");
 		
 		//doon(this);		
 		$('#timep').pietimer('start');
@@ -130,7 +132,7 @@ $(document).ready(function(){
 		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'zq',t:Gcaitime},function(r){});		
 		//$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'zq',t:1},function(r){});
 	  }else{
-		$(this).val('蒸汽 关').removeClass("running");
+		$(this).val('蒸汽 开').removeClass("running");
 		
 		$('#timep').pietimer('pause');		
 		var cctime=$('#timep').text(); 
@@ -143,16 +145,16 @@ $(document).ready(function(){
 	  
 		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'zq'},function(r){});
 	  }
-	  main_steam=!main_steam;	
+	  sta_main=!sta_main;	
 	  return false;
   });
   $("#btnsk_sml_stm").click(function(){
 	  if(sta_slave){
-			$(this).val('保温 开').addClass("running");
+			$(this).val('保温 关').addClass("running");
 		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'bw',t:1},function(r){
 		});
 	  }else{
-			$(this).val('保温 关').removeClass("running");
+			$(this).val('保温 开').removeClass("running");
 		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'bw'},function(r){
 		});
 	  }
@@ -161,25 +163,81 @@ $(document).ready(function(){
   });
   $("#btnsk_sk").click(function(){
 	  if(sta_shaokao){
-			$(this).val('烧烤 开').addClass("running");
-		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'sk',t:1},function(r){
-		});
+		$(this).val('烧烤 关').addClass("running");
+		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'sk',t:1},function(r){});
 	  }else{
-			$(this).val('烧烤 关').removeClass("running");
-		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'sk'},function(r){
-		});
+		$(this).val('烧烤 开').removeClass("running");
+		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'sk'},function(r){});
 	  }
 	  sta_shaokao=!sta_shaokao;
 	  return false;
   });
   $("#btnsk_end").click(function(){
-		$('#btnsk_sk').val('烧烤 关').removeClass("running");
-		$('#btnsk_sml_stm').val('保温 关').removeClass("running");
-		$('#btnsk_big_stm').val('蒸汽 关').removeClass("running");
+		$('#btnsk_sk').val('烧烤 开').removeClass("running");
+		$('#btnsk_sml_stm').val('保温 开').removeClass("running");
+		$('#btnsk_big_stm').val('蒸汽 开').removeClass("running");
 		sta_shaokao=true;
 		sta_slave=true;
-		main_steam=true;
+		sta_main=true;
 		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'all'},function(r){});
+		dooff(this);
+	  return false;
+  });
+  
+  $("#btnqg_zq").click(function(){
+	  if(!sta_slave){
+			$("#btnqg_bw").val('保温 开').removeClass("running");
+			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'bw'},function(r){});
+			sta_slave=!sta_slave;
+	  }
+	  if(sta_main){
+			$(this).val('蒸汽 关').addClass("running");
+			$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'ms',t:1},function(r){});
+	  }else{
+			$(this).val('蒸汽 开').removeClass("running");
+			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'ms'},function(r){});
+	  }
+	  sta_main=!sta_main;
+	  return false;
+  });  
+  $("#btnqg_bw").click(function(){
+	  if(!sta_main){
+			$("#btnqg_zq").val('蒸汽 开').removeClass("running");
+			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'ms'},function(r){});
+			sta_main=!sta_main;
+	  }
+	  if(sta_slave){
+			$(this).val('保温 关').addClass("running");
+			$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'bw',t:1},function(r){});
+	  }else{
+			$(this).val('保温 开').removeClass("running");
+			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'bw'},function(r){});
+	  }
+	  sta_slave=!sta_slave;
+	  return false;
+  });  
+  $("#btnqg_wat").click(function(){
+	  if(sta_wat){
+			$(this).val('上水 关').addClass("running");
+			//$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'ls',t:1},function(r){});
+			$.post('sta',{p:$('#pwd').val(),m:'pump2',spd:100},function(r){});
+	  }else{
+			$(this).val('上水 开').removeClass("running");
+			//$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'ls'},function(r){});
+			$.post('sta',{p:$('#pwd').val(),m:'pump2',spd:0},function(r){});
+	  }
+	  sta_wat=!sta_wat;
+	  return false;
+  });
+  $("#btnqg_end").click(function(){
+		$('#btnqg_zq').val('蒸汽 开').removeClass("running");
+		$('#btnqg_bw').val('保温 开').removeClass("running");
+		$('#btnqg_wat').val('上水 开').removeClass("running");
+		sta_main=true;
+		sta_slave=true;
+		sta_wat=true;
+		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'all'},function(r){});
+		$.post('sta',{p:$('#pwd').val(),m:'pump2',spd:0},function(r){});
 		dooff(this);
 	  return false;
   });
@@ -191,9 +249,9 @@ function timesup(){
 	shell_sta=false;
 	sta_running=true;
 	
-	if(!main_steam){//烧烤模式不回原界面
-		$("#btnsk_big_stm").val('蒸汽 关').removeClass("running");
-		main_steam=true;
+	if(!sta_main){//烧烤模式不回原界面
+		$("#btnsk_big_stm").val('蒸汽 开').removeClass("running");
+		sta_main=true;
 		return false;
 	}
 	
@@ -205,6 +263,8 @@ function timesup(){
 }
 function doon(ckbtn){
 	if($(".scr_div").css("background-image")=="none"){return false;}
+	$('#myaudio').attr('src','voice/kqpr.mp3');
+	myaudio.play();
 	$('#timep').pietimer('start');
 	//if(running_sta=='0'){
 		sta_running=false;
@@ -214,15 +274,17 @@ function doon(ckbtn){
 	return false;
 }
 function dooff(ckbtn){
-	  $('#timep').pietimer('pause');
+	$('#timep').pietimer('pause');
+	$('#myaudio').attr('src','voice/prjsjqpc.mp3');
+	myaudio.play();
 	  
-	  var cctime=$('#timep').text(); 
-	  cctime=cctime.substring(0,cctime.length-2); 
-	  cctime=parseInt(cctime); 
-	  if(isNaN(cctime)){
+	var cctime=$('#timep').text(); 
+	cctime=cctime.substring(0,cctime.length-2); 
+	cctime=parseInt(cctime); 
+	if(isNaN(cctime)){
 		cctime=1;
-	  }
-	  Gcaitime=cctime;
+	}
+	Gcaitime=cctime;
 	
 	//if(running_sta=='1'){
 		sta_running=true;
@@ -241,11 +303,18 @@ function getSta(){
 		var rj=JSON.parse(r);
 		shell_sta=rj.shell_sta;
 		//running_sta=rj.running_sta;
-		if(!sta_shaokao||!sta_slave||!main_steam||!sta_running){
+		if(!sta_shaokao||!sta_slave||!sta_main||!sta_running){
 			running_sta=true
 		}else{
 			running_sta=false
-		};			
+		};
+		if(rj.sta_video==1){
+			$(".vdbtn").val('停止播放').addClass("running");
+			video_onoff=false;
+		}else{
+			$(".vdbtn").val('播放视频').removeClass("running");
+			video_onoff=true;
+		};
 		tempture1=rj.tmp1+40;
 		$("#namescreen").text(tempture1.toFixed(1));
 		update_sta();
@@ -265,40 +334,55 @@ function update_sta(){
 		$('.disable_when_running').attr("disabled","disabled");
 	}  
 }
-function playvideo(){
-	  $.post('video',{p:$('#pwd').val(),m:'play',d:Gvname,i:Gpcai},function(r){});
-}
-function stopvideo(){
-	  $.post('video',{p:$('#pwd').val(),m:'stop',i:Gpcai},function(r){});
-}
-function pausevideo(){
-	  $.post('video',{p:$('#pwd').val(),m:'pause'},function(r){});
+function video_on_off(obj){
+	if(video_onoff){
+		$(obj).val('停止播放').addClass("running");
+		$.post('video',{p:$('#pwd').val(),m:'play',d:Gvname,i:Gpcai},function(r){});
+	}else{
+		$(obj).val('播放视频').removeClass("running");
+		$.post('video',{p:$('#pwd').val(),m:'stop',i:Gpcai},function(r){});
+	}
+	video_onoff=!video_onoff;	
 }
 function shell_up(){
-	  $.post('sta',{p:$('#pwd').val(),m:'shell',d:'up'},function(r){});
+	$('audio').attr('src','voice/qzyggjjsq.mp3');
+	myaudio.play();
+	$.post('sta',{p:$('#pwd').val(),m:'shell',d:'up'},function(r){});
 }
 function shell_dw(){
-	  $.post('sta',{p:$('#pwd').val(),m:'shell',d:'dw'},function(r){});
+	$('audio').attr('src','voice/qzyggjjhs.mp3');
+	myaudio.play();
+	$.post('sta',{p:$('#pwd').val(),m:'shell',d:'dw'},function(r){});
 }
 function slave_on_off(obj){
 	if(sta_slave){
-		$('#btn_bw').val('保温 开').addClass("running");
+		$('#btn_bw').val('保温 关').addClass("running");
 		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'bw',t:1},function(r){});
 	}else{
-		$('#btn_bw').val('保温 关').removeClass("running");
+		$('#btn_bw').val('保温 开').removeClass("running");
 		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'bw'},function(r){});
 	}
 	sta_slave=!sta_slave;	
 }
-function main_steam_on_off(obj){
-	if(main_steam){
-		  $(obj).val('蒸汽 开').addClass("running");
-	  $.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'ms',t:1},function(r){});
+function sta_main_on_off(obj){
+	if(sta_main){
+		$(obj).val('蒸汽 关').addClass("running");
+		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'ms',t:1},function(r){});
 	}else{
-		  $(obj).val('蒸汽 关').removeClass("running");
-	  $.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'ms'},function(r){});
+		$(obj).val('蒸汽 开').removeClass("running");
+		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'ms'},function(r){});
 	}
-	main_steam=!main_steam;	
+	sta_main=!sta_main;	
+}
+function huixi_on_off(obj){
+	if(sta_huixi){
+		$(obj).val('吸气 关').addClass("running");
+		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'hx',t:1},function(r){});
+	}else{
+		$(obj).val('吸气 开').removeClass("running");
+		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'hx'},function(r){});
+	}
+	sta_huixi=!sta_huixi;	
 }
 function liusui_on_off(obj,speed){
 	$('#btnqg_big_wat').prop("disabled",false);
@@ -406,7 +490,7 @@ function do_show_cai_class(){
   <div class="class_div">
     <div style="height:10px"></div>
     <div class="classbtn_div">
-        <input type="button" class="menubtn" value="我的菜单" onClick="show_cai_class('my',this)">
+        <input type="button" class="menubtn" value="已选菜品" onClick="show_cai_class('my',this)">
     </div>
     <div class="classbtn_div">
         <input type="button" class="menubtn classsel" value="全部分类" onClick="show_cai_class('all',this)">
@@ -476,9 +560,9 @@ function do_show_cai_class(){
     </div>
 </div>
 <div class="modal" id="modal2">
-    <div class="closeBtn">注意：在运行中无法设置手动时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <div class="closeBtn">注意：在运行中无法设置手动时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请设置小于990秒&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭&nbsp;&nbsp;&nbsp;&nbsp;</div>
     <div class="modal_cnt">手动设置时间： 
-      <input type="number" id="setMtime" placeholder="请输入时间" value=""/>&nbsp;&nbsp;秒
+      <input type="number" id="setMtime" max='999' placeholder="请输入时间" value=""/>&nbsp;&nbsp;秒
       <input type="button" id="setMtimebtn" style="width:20%" class="menubtn disable_when_running" value="设置">
   </div>
 </div>
@@ -509,33 +593,32 @@ function do_show_cai_class(){
         <input type="button" id="btnoff" class="abtn" value="结束" onClick="dooff(this)">
     </div>
     <div class="btn_div runscr">
-      <input type="button" class="abtn" value="播放视频" onClick="playvideo('01')">
-      <input type="button" class="abtn" value="停止播放" onClick="stopvideo()">
+      <input type="button" class="abtn" value="吸风" onClick="huixi_on_off(this)">
+      <input type="button" class="abtn vdbtn" value="播放视频" onClick="video_on_off(this)">
     </div>
 </div>
 <div id="run_type_40" style="display:none">
     <div class="btn_div runscr">
-        <input type="button" class="abtn disable_when_running" value="盖子 开" onClick="shell_up()">
-        <input type="button" class="abtn disable_when_running" value="盖子 合" onClick="shell_dw()">
+        <input type="button" class="abtn" value="盖子 开" onClick="shell_up()">
+        <input type="button" class="abtn" value="盖子 合" onClick="shell_dw()">
     </div>
     <div class="btn_div runscr">
-        <input type="button" id="btnqg_off_wat" style="width:30%" class="abtn" value="关闭" onClick="liusui_on_off(this,0)">
-        <input type="button" id="btnqg_sml_wat" style="width:30%" class="abtn" value="流水" onClick="liusui_on_off(this,50)">
-        <input type="button" id="btnqg_big_wat" style="width:30%" class="abtn" value="上水" onClick="liusui_on_off(this,100)">
+        <input type="button" id="btnqg_zq" class="abtn " value="蒸汽">
+        <input type="button" id="btnqg_bw" class="abtn " value="保温">
     </div>
     <div class="btn_div runscr">
-        <input type="button" id="btnqg_sml_stm" class="abtn " value="保温" onClick="slave_on_off(this)">
-        <input type="button" id="btnqg_big_stm"  class="abtn "value="蒸汽" onClick="main_steam_on_off(this)">
+        <input type="button" id="btnqg_wat" class="abtn" value="上水">
+        <input type="button" id="btnqg_end" class="abtn" value="结束">
     </div>
     <div class="btn_div runscr">
-      <input type="button" class="abtn" value="播放视频" onClick="playvideo('01')">
-      <input type="button" class="abtn" value="停止播放" onClick="stopvideo()">
+      <input type="button" class="abtn" value="吸风" onClick="huixi_on_off(this)">
+      <input type="button" class="abtn vdbtn" value="播放视频" onClick="video_on_off(this)">
     </div>
 </div>
 <div id="run_type_80" style="display:none">
     <div class="btn_div runscr">
-        <input type="button" class="abtn disable_when_running" value="盖子 开" onClick="shell_up()">
-        <input type="button" class="abtn disable_when_running" value="盖子 合" onClick="shell_dw()">
+        <input type="button" class="abtn" value="盖子 开" onClick="shell_up()">
+        <input type="button" class="abtn" value="盖子 合" onClick="shell_dw()">
     </div>
     <div class="btn_div runscr">
         <input type="button" id="btnsk_big_stm"  class="abtn "value="蒸汽">
@@ -546,9 +629,10 @@ function do_show_cai_class(){
         <input type="button" id="btnsk_end"  class="abtn "value="结束">
     </div>
     <div class="btn_div runscr">
-      <input type="button" class="abtn" value="播放视频" onClick="playvideo('01')">
-      <input type="button" class="abtn" value="停止播放" onClick="stopvideo()">
+      <input type="button" class="abtn" value="吸风" onClick="huixi_on_off(this)">
+      <input type="button" class="abtn vdbtn" value="播放视频" onClick="video_on_off(this)">
     </div>
 </div>
+<audio id="myaudio" src="voice/prjsjqpc.mp3" >audio tag</audio>
 </body>
 </html>
