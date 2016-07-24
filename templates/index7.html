@@ -10,6 +10,7 @@
 <script type='text/javascript' src='../js/jquery.modal.js'></script>
 <script type='text/javascript' src='../js/ktimer3.js'></script>
 <script type="text/javascript">
+var watchdog=null;
 var Gcaitime=5;
 var Gvname='js';
 var Gpcai='01';
@@ -122,32 +123,6 @@ $(document).ready(function(){
 	  return false;
   });
   
-  $("#btnsk_big_stm").click(function(){
-	  if(sta_main){
-		$(this).val('蒸汽 关').addClass("running");
-		
-		//doon(this);		
-		$('#timep').pietimer('start');
-		sta_running=false;
-		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'zq',t:Gcaitime},function(r){});		
-		//$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'zq',t:1},function(r){});
-	  }else{
-		$(this).val('蒸汽 开').removeClass("running");
-		
-		$('#timep').pietimer('pause');		
-		var cctime=$('#timep').text(); 
-		cctime=cctime.substring(0,cctime.length-2); 
-		cctime=parseInt(cctime); 
-		if(isNaN(cctime)){
-		  cctime=1;
-		}
-		Gcaitime=cctime;
-	  
-		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'zq'},function(r){});
-	  }
-	  sta_main=!sta_main;	
-	  return false;
-  });
   $(".btn_bw").click(function(){
 	  if(sta_slave){
 			$(".btn_bw").val('保温 关').addClass("running");
@@ -170,19 +145,30 @@ $(document).ready(function(){
 	  sta_shaokao=!sta_shaokao;
 	  return false;
   });
-  
-  $(".btn_xf").click(function(){
-		if(sta_huixi){
-			$(".btn_xf").val('吸风 关').addClass("running");
-			$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'hx',t:1},function(r){});
-		}else{
-			$(".btn_xf").val('吸风 开').removeClass("running");
-			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'hx'},function(r){});
+  $("#btnsk_big_stm").click(function(){
+	  if(sta_main){
+		$(this).val('蒸汽 关').addClass("running");
+		
+		$('#timep').pietimer('start');
+		sta_running=false;
+		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'zq',t:Gcaitime},function(r){});
+	  }else{
+		$(this).val('蒸汽 开').removeClass("running");
+		
+		$('#timep').pietimer('pause');		
+		var cctime=$('#timep').text(); 
+		cctime=cctime.substring(0,cctime.length-2); 
+		cctime=parseInt(cctime); 
+		if(isNaN(cctime)){
+		  cctime=1;
 		}
-		sta_huixi=!sta_huixi;
-		return false;
+		Gcaitime=cctime;
+	  
+		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'zq'},function(r){});
+	  }
+	  sta_main=!sta_main;	
+	  return false;
   });
-
   
   $("#btnqg_zq").click(function(){
 	  if(!sta_slave){
@@ -229,8 +215,21 @@ $(document).ready(function(){
 	  sta_wat=!sta_wat;
 	  return false;
   });
+  
   $(".btn_end").click(function(){
 		dooff();
+		return false;
+  });
+  
+  $(".btn_xf").click(function(){
+		if(sta_huixi){
+			$(".btn_xf").val('吸风 关').addClass("running");
+			$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'hx',t:1},function(r){});
+		}else{
+			$(".btn_xf").val('吸风 开').removeClass("running");
+			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'hx'},function(r){});
+		}
+		sta_huixi=!sta_huixi;
 		return false;
   });
   
@@ -341,6 +340,16 @@ function getSta(){
 	}).error(function(){ 
 		disconnect();
 	});
+	
+	if(sta_slave==false||sta_main==false||sta_wat==false||sta_shaokao==false||sta_huixi==false){
+		if(watchdog==null){
+			watchdog=setInterval("dooff()",1800*1000);
+			log('watchdoged 30min');
+		}
+	}else{
+		clearInterval(watchdog);
+		watchdog=null;
+	}
 }
 function update_sta(){
 	if(shell_sta=='2'){

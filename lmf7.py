@@ -127,7 +127,6 @@ def video(request):
 
 watchdog=0
 huixiqi=-1
-limsktime=-1
 
 eTimer1=False
 eIntval1=5
@@ -159,7 +158,7 @@ running_sta
 @asyncio.coroutine
 def return_sta(request):
     global eTimer1,eIntval1,eTimer2,eIntval2,sta_onoff,watchdog
-    global shell_up_down,sta_shell,huixiqi,limsktime,omx
+    global shell_up_down,sta_shell,huixiqi,omx
     global stapwd,setpwd,softPath,tempeture_1,ttim,t
 
     hhdd=[('Access-Control-Allow-Origin','*')]
@@ -228,8 +227,7 @@ def return_sta(request):
                 tbody= '{"a":"bw","b":"on"}'
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 0)
-                GPIO.output(io_hx, 0)                
-                limsktime=18000
+                GPIO.output(io_hx, 0)
                 huixiqi=-1
                 tbody= '{"a":"sk","b":"on"}'
             print(tbody)
@@ -267,7 +265,6 @@ def return_sta(request):
                 tbody= '{"a":"bw","b":"off"}'
             elif po['d']== 'sk':
                 GPIO.output(io_sk, 1)
-                limsktime=-1
                 huixiqi=200
                 GPIO.output(io_hx, 0)
                 print('huixiqi on sk 30s')
@@ -277,8 +274,8 @@ def return_sta(request):
                 GPIO.output(io_bw, 1)
                 GPIO.output(io_sk, 1)
                 GPIO.output(io_jr, 1)
-                limsktime=-1
-                huixiqi=200
+                GPIO.output(io_hx, 1)
+                #huixiqi=200
                 tbody= '{"a":"all","b":"off"}'
             print(tbody)
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
@@ -410,7 +407,7 @@ def get_temp():
 @asyncio.coroutine
 def loop_info():
     global eTimer1,eIntval1,eTimer2,eIntval2,sta_shell,sta_onoff
-    global watchdog,huixiqi,p,ttim,limsktime
+    global watchdog,huixiqi,p,ttim
     while True:
         yield from asyncio.sleep(0.1)
         watchdog+=1
@@ -424,18 +421,6 @@ def loop_info():
             GPIO.output(io_sk, 1)
             GPIO.output(io_hx, 1)
                         
-        if limsktime>0:
-            limsktime-=1
-        elif limsktime==0:
-            limsktime=-1
-            sta_onoff=0
-            print('over 30min')
-            GPIO.output(io_bw, 1)
-            GPIO.output(io_jr, 1)
-            GPIO.output(io_zq, 1)
-            GPIO.output(io_sk, 1)
-            GPIO.output(io_hx, 1)
-
         if huixiqi>0:
             huixiqi-=1
             #print(huixiqi)
