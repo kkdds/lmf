@@ -60,16 +60,18 @@ function update_ui() {
   var msg='';
   if(ws==null){
 	  $('#status').text('未连接或密码错误');
-	  $('.connect').val('连接');
+	  //$('.connect').val('连接');
+	  $('#cntBtn').css("background-image","url('../css/link.png')");
 	  //$('#cntBtn').addClass('modalLink1');
 	  //$('#cntBtn').removeClass('connect');
 	  $(".runscr").css("display","none");
   }else{
 	  $('#status').text('已连接，请关闭本窗口');
-	  $('#cntBtn').addClass('connect');
+	  $('#cntBtn').css("background-image","url('../css/broken.png')");
+	  //$('#cntBtn').addClass('connect');
 	  //$('#cntBtn').removeClass('modalLink1');
 	  //$('#updown').prop("disabled", false);
-	  $('.connect').val('断开');
+	  //$('.connect').val('断开');
 	  $(".runscr").css("display","block");
   }
 }

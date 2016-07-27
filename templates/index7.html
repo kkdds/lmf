@@ -68,8 +68,6 @@ $(document).ready(function(){
 	  $(".item_div").css("display","block");
 	  $("#addtime").css("display","none");	  
 	  $(".scr_div").scrollTop(Gscly);
-	  //$(".menubtn").prop("disabled",false);
-	  //$(".menubtn:eq(1)").prop("disabled",true);	  
 	  do_show_cai_class();
 	  return false;
   });
@@ -125,10 +123,10 @@ $(document).ready(function(){
   
   $(".btn_bw").click(function(){
 	  if(sta_slave){
-			$(".btn_bw").val('保温 关').addClass("running");
+			$(".btn_bw").val('保温 开').addClass("running");
 			$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'bw',t:1},function(r){});
 	  }else{
-			$(".btn_bw").val('保温 开').removeClass("running");
+			$(".btn_bw").val('保温').removeClass("running");
 			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'bw'},function(r){});
 	  }
 	  sta_slave=!sta_slave;
@@ -136,10 +134,10 @@ $(document).ready(function(){
   });
   $("#btnsk_sk").click(function(){
 	  if(sta_shaokao){
-		$(this).val('烧烤 关').addClass("running");
+		$(this).val('烧烤 开').addClass("running");
 		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'sk',t:1},function(r){});
 	  }else{
-		$(this).val('烧烤 开').removeClass("running");
+		$(this).val('烧烤').removeClass("running");
 		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'sk'},function(r){});
 	  }
 	  sta_shaokao=!sta_shaokao;
@@ -147,14 +145,12 @@ $(document).ready(function(){
   });
   $("#btnsk_big_stm").click(function(){
 	  if(sta_main){
-		$(this).val('蒸汽 关').addClass("running");
-		
+		$(this).val('蒸汽 开').addClass("running");		
 		$('#timep').pietimer('start');
 		sta_running=false;
 		$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'zq',t:Gcaitime},function(r){});
 	  }else{
-		$(this).val('蒸汽 开').removeClass("running");
-		
+		$(this).val('蒸汽').removeClass("running");		
 		$('#timep').pietimer('pause');		
 		var cctime=$('#timep').text(); 
 		cctime=cctime.substring(0,cctime.length-2); 
@@ -162,8 +158,7 @@ $(document).ready(function(){
 		if(isNaN(cctime)){
 		  cctime=1;
 		}
-		Gcaitime=cctime;
-	  
+		Gcaitime=cctime;	  
 		$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'zq'},function(r){});
 	  }
 	  sta_main=!sta_main;	
@@ -172,15 +167,15 @@ $(document).ready(function(){
   
   $("#btnqg_zq").click(function(){
 	  if(!sta_slave){
-			$("#btnqg_bw").val('保温 开').removeClass("running");
+			$("#btnqg_bw").val('保温').removeClass("running");
 			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'bw'},function(r){});
 			sta_slave=!sta_slave;
 	  }
 	  if(sta_main){
-			$(this).val('蒸汽 关').addClass("running");
+			$(this).val('蒸汽 开').addClass("running");
 			$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'ms',t:1},function(r){});
 	  }else{
-			$(this).val('蒸汽 开').removeClass("running");
+			$(this).val('蒸汽').removeClass("running");
 			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'ms'},function(r){});
 	  }
 	  sta_main=!sta_main;
@@ -188,15 +183,15 @@ $(document).ready(function(){
   });  
   $("#btnqg_bw").click(function(){
 	  if(!sta_main){
-			$("#btnqg_zq").val('蒸汽 开').removeClass("running");
+			$("#btnqg_zq").val('蒸汽').removeClass("running");
 			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'ms'},function(r){});
 			sta_main=!sta_main;
 	  }
 	  if(sta_slave){
-			$(this).val('保温 关').addClass("running");
+			$(this).val('保温 开').addClass("running");
 			$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'bw',t:1},function(r){});
 	  }else{
-			$(this).val('保温 开').removeClass("running");
+			$(this).val('保温').removeClass("running");
 			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'bw'},function(r){});
 	  }
 	  sta_slave=!sta_slave;
@@ -204,11 +199,11 @@ $(document).ready(function(){
   });  
   $("#btnqg_wat").click(function(){
 	  if(sta_wat){
-			$(this).val('上水 关').addClass("running");
+			$(this).val('上水 开').addClass("running");
 			//$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'ls',t:1},function(r){});
 			$.post('sta',{p:$('#pwd').val(),m:'pump2',spd:100},function(r){});
 	  }else{
-			$(this).val('上水 开').removeClass("running");
+			$(this).val('上水').removeClass("running");
 			//$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'ls'},function(r){});
 			$.post('sta',{p:$('#pwd').val(),m:'pump2',spd:0},function(r){});
 	  }
@@ -223,10 +218,10 @@ $(document).ready(function(){
   
   $(".btn_xf").click(function(){
 		if(sta_huixi){
-			$(".btn_xf").val('吸风 关').addClass("running");
+			$(".btn_xf").val('吸风 开').addClass("running");
 			$.post('sta',{p:$('#pwd').val(),m:'gpioon',d:'hx',t:1},function(r){});
 		}else{
-			$(".btn_xf").val('吸风 开').removeClass("running");
+			$(".btn_xf").val('吸风').removeClass("running");
 			$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'hx'},function(r){});
 		}
 		sta_huixi=!sta_huixi;
@@ -252,13 +247,16 @@ function timesup(){
 	shell_sta=false;
 	sta_running=true;
 	
+	$('#myaudio').attr('src','voice/prjsjqpc.mp3');
+	myaudio.play();
+	
 	if(!sta_main){//烧烤模式不回原界面
-		$("#btnsk_big_stm").val('蒸汽 开').removeClass("running");
+		$("#btnsk_big_stm").val('蒸汽').removeClass("running");
 		sta_main=true;
 		return false;
 	}
 	
-	$('#btn_bw').removeAttr("disabled");		
+	$('.btn_bw').val('保温').removeClass("running").removeAttr("disabled");		
 	$(".scr_div").css("background-image","none");//完成后回到原界面
 	$(".item_div").css("display","block");
 	$(".scr_div").scrollTop(Gscly);
@@ -278,14 +276,14 @@ function doon(ckbtn){
 }
 
 function dooff(){	
-	$('#btnsk_sk').val('烧烤 开').removeClass("running");
-	$('#btnsk_sml_stm').val('保温 开').removeClass("running");
-	$('#btnsk_big_stm').val('蒸汽 开').removeClass("running");
-	$('#btnqg_zq').val('蒸汽 开').removeClass("running");
-	$('#btnqg_bw').val('保温 开').removeClass("running");
-	$('#btnqg_wat').val('上水 开').removeClass("running");
-	$('.btn_bw').val('保温 开').removeClass("running");
-	$('.btn_xf').val('吸风 开').removeClass("running");
+	$('#btnsk_sk').val('烧烤').removeClass("running");
+	$('#btnsk_sml_stm').val('保温').removeClass("running");
+	$('#btnsk_big_stm').val('蒸汽').removeClass("running");
+	$('#btnqg_zq').val('蒸汽').removeClass("running");
+	$('#btnqg_bw').val('保温').removeClass("running");
+	$('#btnqg_wat').val('上水').removeClass("running");
+	$('.btn_bw').val('保温').removeClass("running");
+	$('.btn_xf').val('吸风').removeClass("running");
 	$.post('sta',{p:$('#pwd').val(),m:'gpiooff',d:'all'},function(r){});
 	sta_main=true;
 	sta_slave=true;
@@ -433,6 +431,12 @@ function show_cai_class(showtype,cbtn){
 	$(".scr_div").scrollTop();
 	Gshowtype=showtype;
 	do_show_cai_class();
+	
+	//选分类就切换控制面板
+	  caiclass=showtype;
+	  if(caiclass!='40'&&caiclass!='80'){caiclass='def';}
+	  $("#run_type").html($("#run_type_"+caiclass).children().clone(true));
+	  return false;
 }
 function do_show_cai_class(){
 	showtype=Gshowtype;
@@ -476,7 +480,7 @@ function do_show_cai_class(){
 <body>
 <div class="left_div">
   <div class="class_div">
-    <div style="height:10px"></div>
+    <div style="height:5px"></div>
     <div class="classbtn_div">
         <input type="button" class="menubtn" value="已选菜品" onClick="show_cai_class('my',this)">
     </div>
@@ -526,15 +530,18 @@ function do_show_cai_class(){
 </div>
 <div class="right_div">
   <div class="ctrl_div">  
-    <div style="padding-bottom:10px;height:13%">
-    	<span id="namescreen" class="namescreen" style="width:30%">v7</span> ℃ &nbsp; &nbsp;
-    	<input type="button" id="cntBtn" class="abtn disable_when_running " style="width:30%" value="连接">
-    	<input type="button" id="setBtn" class="abtn disable_when_running " style="width:30%" value="设置" onClick="do_show_setting()">
+    <div style="padding-bottom:18px;height:13%">
+    	<span id="namescreen" class="namescreen" style="width:40%; font-size:64px">123.4</span>&nbsp;&nbsp;<span style="font-size:48px"> ℃ </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	<input type="button" id="cntBtn" class="abtn disable_when_running " style="width:48px; background:url(../css/link.png);background-position: center center;
+    background-repeat: no-repeat;padding: 6px 0;" value="">
+&nbsp;&nbsp;
+    	<input type="button" id="setBtn" class="abtn disable_when_running " style="width:48px; background:url(../css/set.png);background-position: center center;
+    background-repeat: no-repeat;padding: 6px 0;" value="" onClick="do_show_setting()">
     </div>
-    <div class="btn_div runscr modalLink2" style="height:22%">
-      <p id="timep"></p>            
+    <div class="btn_div runscr modalLink2" style="height:23%">
+      <p id="timep" style="height:80%;"></p>            
     </div>
-    <div id="run_type" style="height:65%"></div>    
+    <div id="run_type" style="height:60%"></div>    
   </div>
 </div>
 
@@ -543,7 +550,7 @@ function do_show_cai_class(){
     <div class="closeBtn">关闭&nbsp;&nbsp;&nbsp;&nbsp;</div>
     <div class="modal_cnt">密码： <input type="text" id="pwd" placeholder="请输入密码" value=""/></div>
 	<div class="modal_cnt">
-      <input type="button" id="connect" style="width:40%" class="menubtn connect" value="连接">&nbsp;|&nbsp;状态:
+      <input type="button" id="connect" style="width:40%" class="menubtn connect" value="连接 / 断开">&nbsp;|&nbsp;当前状态:
       <span id="status">未连接</span>
     </div>
 </div>
@@ -570,8 +577,8 @@ function do_show_cai_class(){
 <div class="modal" id="caitmp"></div>
 <div id="run_type_def" style="display:none">
     <div class="btn_div runscr">
-        <input type="button" class="abtn disable_when_running" value="盖子 开" onClick="shell_up()">
-        <input type="button" class="abtn disable_when_running" value="盖子 合" onClick="shell_dw()">
+        <input type="button" class="abtn disable_when_running" value="升 盖" onClick="shell_up()">
+        <input type="button" class="abtn disable_when_running" value="降 盖" onClick="shell_dw()">
     </div>
     <div class="btn_div runscr">
         <input type="button" id="btnon" class="abtn disable_when_running" value="开始" onClick="doon(this)">
@@ -587,8 +594,8 @@ function do_show_cai_class(){
 </div>
 <div id="run_type_40" style="display:none">
     <div class="btn_div runscr">
-        <input type="button" class="abtn" value="盖子 开" onClick="shell_up()">
-        <input type="button" class="abtn" value="盖子 合" onClick="shell_dw()">
+        <input type="button" class="abtn" value="升 盖" onClick="shell_up()">
+        <input type="button" class="abtn" value="降 盖" onClick="shell_dw()">
     </div>
     <div class="btn_div runscr">
         <input type="button" id="btnqg_zq" class="abtn " value="蒸汽">
@@ -605,8 +612,8 @@ function do_show_cai_class(){
 </div>
 <div id="run_type_80" style="display:none">
     <div class="btn_div runscr">
-        <input type="button" class="abtn" value="盖子 开" onClick="shell_up()">
-        <input type="button" class="abtn" value="盖子 合" onClick="shell_dw()">
+        <input type="button" class="abtn" value="升 盖" onClick="shell_up()">
+        <input type="button" class="abtn" value="降 盖" onClick="shell_dw()">
     </div>
     <div class="btn_div runscr">
         <input type="button" id="btnsk_big_stm" class="abtn "value="蒸汽">
