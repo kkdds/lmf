@@ -23,7 +23,7 @@ io_zq=8 #蒸汽
 io_jr=25 #加热管
 io_bw=24 #保温
 io_hx=23 #回吸
-io_e2=18 #
+io_ss=18 #上水
 io_e3=15 #
 io_e4=14 #
 GPIO.setup(io_bw, GPIO.OUT)
@@ -31,7 +31,7 @@ GPIO.setup(io_jr, GPIO.OUT)
 GPIO.setup(io_zq, GPIO.OUT)
 GPIO.setup(io_sk, GPIO.OUT)
 GPIO.setup(io_hx, GPIO.OUT)
-GPIO.setup(io_e2, GPIO.OUT)
+GPIO.setup(io_ss, GPIO.OUT)
 GPIO.setup(io_e3, GPIO.OUT)
 GPIO.setup(io_e4, GPIO.OUT)
 GPIO.output(io_bw, 1)
@@ -39,7 +39,7 @@ GPIO.output(io_jr, 1)
 GPIO.output(io_zq, 1)
 GPIO.output(io_sk, 1)
 GPIO.output(io_hx, 1)
-GPIO.output(io_e2, 1)
+GPIO.output(io_ss, 1)
 GPIO.output(io_e3, 1)
 GPIO.output(io_e4, 1)
 
@@ -275,6 +275,7 @@ def return_sta(request):
                 GPIO.output(io_sk, 1)
                 GPIO.output(io_jr, 1)
                 GPIO.output(io_hx, 1)
+                GPIO.output(io_ss, 1)
                 #huixiqi=200
                 tbody= '{"a":"all","b":"off"}'
             print(tbody)
@@ -311,7 +312,11 @@ def return_sta(request):
         elif po['m'] == 'pump2':
             GPIO.output(moto_2_f, 0)
             GPIO.output(moto_2_r, 1)
-            p2.ChangeDutyCycle(int(po['spd']))
+            #p2.ChangeDutyCycle(int(po['spd']))
+            if int(po['spd'])==100:
+                GPIO.output(io_ss, 0)
+            else:
+                GPIO.output(io_ss, 1)
             tbody= '{"a":"pump2","b":"'+po['spd']+'"}'
             print(tbody)
             return web.Response(headers=hhdd ,body=tbody.encode('utf-8'))
